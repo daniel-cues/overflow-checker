@@ -3,4 +3,4 @@ This is a tool you can use to check if a simple binary is vulnerable to basic bu
 Usage:
 `./overflow_checker <filename>`
 
-You can find some binaries as demo in the test:files directory
+You can find some binaries as demo in the test_files directory
