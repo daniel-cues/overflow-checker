@@ -4,13 +4,13 @@ Use:
 ./overflow_checker.py <file_path>
 """
 
-import struct, subprocess, sys
+import struct, subprocess, sys, argparse
 from subprocess import PIPE, TimeoutExpired 
 
 __author__= "Daniel Cuesta Suárez. @danielcues"
 
 
-insane = 99999
+max = 99999
 program = ""
 
 
@@ -42,7 +42,7 @@ def overflow(n):
 
 def insaneOverflow():
 	"""Calls the overflow function with the stablished maximun value"""
-	return overflow(insane)
+	return overflow(max)
 
 
 
@@ -61,17 +61,39 @@ def findMinPaddingInInterval(start, end):
 
 def findMinPadding():
 	"""Starts the search for minimun padding"""
-	return findMinPaddingInInterval(1,insane)
+	return findMinPaddingInInterval(1,max)
+
+def initProgram():
+	"""Parses the program arguments and stores them accordingly"""
+	global program, max
+
+	parser = argparse.ArgumentParser(description='Options',
+					 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+	parser.add_argument("-m","--max", 
+			    help="maximum number of bytes to test", 
+			    type=int,
+			    default=max)
+
+	parser.add_argument("program", 
+			    help="program to perform the check on")
+
+	args= parser.parse_args()
+
+
+	
+	program = args.program
+	max = args.max
 
 
 def main():
-	global program 
-	program= sys.argv[1]
+
+	initProgram()
 
 	if (insaneOverflow()):
 		minimunPadding = findMinPadding()
 		print("Program needs at least %d bytes to break." % minimunPadding)
-		print("That means your padding should be %d bytes long" %  (minimunPadding-4))
+		print("That means your padding should be %d bytes long" % (minimunPadding-4))
 		
 	else:
 		print("%s is not vulnerable to buffer oveflow. Better luck next time" % program)
