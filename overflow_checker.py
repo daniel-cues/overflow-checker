@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""This program finds the minimun number of bytes needed to overflow the stack of a simple binary."""
+"""This program finds the minimun number of bytes needed to overflow the stack of a simple binary.
+Use: 
+./overflow_checker.py <file_path>
+"""
 
 import struct, subprocess, sys
 from subprocess import PIPE, TimeoutExpired 
